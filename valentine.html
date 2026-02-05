@@ -83,6 +83,16 @@
             noButton.style.top = `${y}px`;
         });
 
+        // No button jumps on click (every attempt)
+        noButton.addEventListener('click', (e) => {
+            e.preventDefault(); // Prevent any default click behavior
+            const x = Math.random() * (window.innerWidth - 100);
+            const y = Math.random() * (window.innerHeight - 100);
+            noButton.style.left = `${x}px`;
+            noButton.style.top = `${y}px`;
+            alert('Oops! The No button is shy and jumped away! Try again... 😊');
+        });
+
         // Yes button: Store response, send email, and redirect
         document.getElementById('yes').addEventListener('click', () => {
             const timestamp = new Date().toLocaleString();
@@ -96,7 +106,7 @@
                 response: 'Yes',
                 timestamp: timestamp
             };
-            emailjs.send('service_tdadgbs', 'template_ztc1ec4', templateParams) // Replace with your Service ID and Template ID
+            emailjs.send('service_tdadgbs', 'template-ztc1ec4', templateParams) // Replace with your Service ID and Template ID
                 .then(function(response) {
                     console.log('Email sent successfully!', response.status, response.text);
                 }, function(error) {
@@ -106,12 +116,6 @@
             // Redirect to success page
             window.location.href = 'success.html';
         });
-
-        // No button persists (doesn't accept, just jumps)
-        document.getElementById('no').addEventListener('click', () => {
-            alert('Oops! Try again... the No button is shy! 😊');
-        });
     </script>
 </body>
 </html>
-
