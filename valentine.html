@@ -51,6 +51,13 @@
             background: #ff6347;
         }
     </style>
+    <!-- EmailJS Script -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function(){
+            emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your Public Key
+        })();
+    </script>
 </head>
 <body>
     <div>
@@ -76,12 +83,28 @@
             noButton.style.top = `${y}px`;
         });
 
-        // Yes button: Store response and redirect directly to success page
+        // Yes button: Store response, send email, and redirect
         document.getElementById('yes').addEventListener('click', () => {
+            const timestamp = new Date().toLocaleString();
             const responses = JSON.parse(localStorage.getItem('valentineResponses')) || [];
-            responses.push({ name, response: 'Yes', timestamp: new Date().toLocaleString() });
+            responses.push({ name, response: 'Yes', timestamp });
             localStorage.setItem('valentineResponses', JSON.stringify(responses));
-            window.location.href = 'success.html'; // Direct redirect
+
+            // Send email via EmailJS
+            const templateParams = {
+                name: name,
+                response: 'Yes',
+                timestamp: timestamp
+            };
+            emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', templateParams) // Replace with your Service ID and Template ID
+                .then(function(response) {
+                    console.log('Email sent successfully!', response.status, response.text);
+                }, function(error) {
+                    console.log('Email failed to send...', error);
+                });
+
+            // Redirect to success page
+            window.location.href = 'success.html';
         });
 
         // No button persists (doesn't accept, just jumps)
