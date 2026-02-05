@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin: Valentine Responses</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to bottom, #ff69b4, #ffb6c1);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px;
+            margin: 10px;
+            border-radius: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1.2em;
+            background: #ff1493;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #ff69b4;
+        }
+        #error {
+            color: #ff4500;
+            font-size: 1.2em;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="content" style="display: none;">
+        <h1>Admin: Valentine Responses 💌</h1>
+        <ul id="responses"></ul>
+        <button onclick="clearResponses()">Clear All Responses</button>
+    </div>
+    <div id="error"></div>
+
+    <script>
+        // Password check (change 'valentine2023' to your desired password)
+        const correctPassword = 'valentine2023';
+        const enteredPassword = prompt('Enter the admin password to view responses: 🔒');
+
+        if (enteredPassword === correctPassword) {
+            // Show content if password is correct
+            document.getElementById('content').style.display = 'block';
+
+            // Load and display responses from localStorage
+            const responses = JSON.parse(localStorage.getItem('valentineResponses')) || [];
+            const list = document.getElementById('responses');
+            if (responses.length === 0) {
+                list.innerHTML = '<li>No responses yet! 💔</li>';
+            } else {
+                responses.forEach(res => {
+                    const li = document.createElement('li');
+                    li.textContent = `${res.name} said ${res.response} at ${res.timestamp}`;
+                    list.appendChild(li);
+                });
+            }
+        } else {
+            // Show error if password is wrong
+            document.getElementById('error').textContent = 'Incorrect password! Access denied. 😢';
+        }
+
+        // Function to clear responses (only if password was correct)
+        function clearResponses() {
+            localStorage.removeItem('valentineResponses');
+            location.reload();
+        }
+    </script>
+</body>
+</html>

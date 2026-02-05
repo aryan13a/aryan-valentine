@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine Proposal</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to bottom, #ffb6c1, #ff69b4);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+            padding: 20px;
+            position: relative;
+            text-align: center;
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        .buttons {
+            margin-top: 30px;
+        }
+        button {
+            padding: 15px 30px;
+            font-size: 1.5em;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            margin: 10px;
+            transition: 0.3s;
+        }
+        #yes {
+            background: #32cd32;
+            color: white;
+        }
+        #yes:hover {
+            background: #228b22;
+        }
+        #no {
+            background: #ff4500;
+            color: white;
+            position: absolute;
+        }
+        #no:hover {
+            background: #ff6347;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1 id="message"></h1>
+        <div class="buttons">
+            <button id="yes">Yes 💕</button>
+            <button id="no">No 😢</button>
+        </div>
+    </div>
+
+    <script>
+        // Get name from URL parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const name = urlParams.get('name') || 'Friend';
+        document.getElementById('message').textContent = `${name}, Aryan wants you to be his valentine! Will you say yes?`;
+
+        // No button jumps to random position on hover
+        const noButton = document.getElementById('no');
+        noButton.addEventListener('mouseover', () => {
+            const x = Math.random() * (window.innerWidth - 100);
+            const y = Math.random() * (window.innerHeight - 100);
+            noButton.style.left = `${x}px`;
+            noButton.style.top = `${y}px`;
+        });
+
+        // Yes button: Store response and redirect directly to success page
+        document.getElementById('yes').addEventListener('click', () => {
+            const responses = JSON.parse(localStorage.getItem('valentineResponses')) || [];
+            responses.push({ name, response: 'Yes', timestamp: new Date().toLocaleString() });
+            localStorage.setItem('valentineResponses', JSON.stringify(responses));
+            window.location.href = 'success.html'; // Direct redirect
+        });
+
+        // No button persists (doesn't accept, just jumps)
+        document.getElementById('no').addEventListener('click', () => {
+            alert('Oops! Try again... the No button is shy! 😊');
+        });
+    </script>
+</body>
+</html>
